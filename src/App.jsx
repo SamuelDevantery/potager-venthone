@@ -206,6 +206,34 @@ export default function App() {
   const LAT = 46.307;
   const LON = 7.529;
 
+  const exportData = useCallback(() => {
+    const raw = localStorage.getItem("garden-data");
+    if (!raw) return;
+    const blob = new Blob([raw], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `potager-venthone-sauvegarde-${todayISO()}.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }, []);
+
+  const importData = useCallback((file) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const parsed = JSON.parse(e.target.result);
+        localStorage.setItem("garden-data", JSON.stringify(parsed));
+        window.location.reload();
+      } catch (err) {
+        alert("Ce fichier ne semble pas être une sauvegarde valide de l'appli potager.");
+      }
+    };
+    reader.readAsText(file);
+  }, []);
+
   const fetchWeather = useCallback(async () => {
     setWeather((prev) => ({ ...(prev || {}), loading: true, error: null }));
     try {
@@ -468,7 +496,7 @@ export default function App() {
 
       {tab === "semis" && <SemisView />}
 
-      {tab === "stats" && <StatsView harvests={harvests} onEdit={(h) => setSelectedDay({ date: h.date, editId: h.id })} onDelete={deleteHarvest} />}
+      {tab === "stats" && <StatsView harvests={harvests} onEdit={(h) => setSelectedDay({ date: h.date, editId: h.id })} onDelete={deleteHarvest} onExport={exportData} onImport={importData} />}
 
       {selectedCell && (
         <CellModal
@@ -1211,7 +1239,7 @@ function SemisView() {
 /* Vue : statistiques annuelles                                        */
 /* ------------------------------------------------------------------ */
 
-function StatsView({ harvests, onEdit, onDelete }) {
+function StatsView({ harvests, onEdit, onDelete, onExport, onImport }) {
   const years = useMemo(() => {
     const set = new Set(harvests.map((h) => h.date.slice(0, 4)));
     set.add(String(new Date().getFullYear()));
@@ -1288,6 +1316,36 @@ function StatsView({ harvests, onEdit, onDelete }) {
           </div>
         </>
       )}
+
+      <BackupSection onExport={onExport} onImport={onImport} />
+    </div>
+  );
+}
+
+function BackupSection({ onExport, onImport }) {
+  const fileInputRef = React.useRef(null);
+  return (
+    <div style={styles.backupBox}>
+      <h3 style={styles.taskGroupTitle}>💾 Sauvegarde / transfert</h3>
+      <div style={styles.backupText}>
+        Utile avant de changer de téléphone, ou juste pour garder une copie de secours de tes données (plantations, récoltes, historique).
+      </div>
+      <div style={styles.backupActions}>
+        <button style={styles.doneBtn} onClick={onExport}>⬇️ Exporter mes données</button>
+        <button style={styles.doneBtn} onClick={() => fileInputRef.current?.click()}>⬆️ Importer une sauvegarde</button>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="application/json"
+          style={{ display: "none" }}
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file) onImport(file);
+            e.target.value = "";
+          }}
+        />
+      </div>
+      <div style={styles.backupWarning}>⚠️ Importer une sauvegarde remplace toutes les données actuellement sur cet appareil.</div>
     </div>
   );
 }
@@ -1416,4 +1474,8 @@ const styles = {
   statsBarTrack: { background: "#EDE8DA", borderRadius: 4, height: 14, overflow: "hidden" },
   statsBarFill: { background: "#33513F", height: "100%", borderRadius: 4 },
   statsValue: { fontSize: 12.5, color: "#6E6752", textAlign: "right" },
+  backupBox: { marginTop: 24, paddingTop: 16, borderTop: "1px solid #D8D0BC" },
+  backupText: { fontSize: 12, color: "#6E6752", marginBottom: 10, lineHeight: 1.4, fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" },
+  backupActions: { display: "flex", gap: 8, flexWrap: "wrap" },
+  backupWarning: { fontSize: 11, color: "#B5651D", marginTop: 8, fontStyle: "italic" },
 };
