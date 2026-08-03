@@ -1,0 +1,8 @@
+{
+  "name": "Mon potager — Venthône",
+  "short_name": "Potager",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F2EEE3",
+  "theme_color": "#33513F"
+}
