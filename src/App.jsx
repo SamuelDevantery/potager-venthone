@@ -11,11 +11,11 @@ const ALTITUDE = 850;
 // mieux géré en quantité (graines/plants) par case qu'en case unique.
 const CATALOGUE = [
   { id: "ail", nom: "Ail", emoji: "🧄", famille: "alliacees", bonsVoisins: ["radis"], type: "unit", distPlantsCm: "10 cm", distRangsCm: "25-30 cm", densiteM2: 13.5, repere: "Privilégier la plantation d'automne.", plantationExt: [9, 10], recolteJours: 210, arrosageJours: 5, serreOk: false, uniteDefaut: "pièces" },
-  { id: "aubergine", nom: "Aubergine", emoji: "🍆", famille: "solanacees", bonsVoisins: ["basilic", "melon"], soins: [{ jours: 10, label: "Installer un tuteur", emoji: "🪵" }, { jours: 14, label: "Pailler au pied", emoji: "🌾" }], type: "unit", distPlantsCm: "40-50 cm", distRangsCm: "60 cm", densiteM2: 3.5, repere: "Aime les sols chauds.", semisSerre: [2, 3], plantationExt: [5], recolteJours: 110, arrosageJours: 1, serreOk: true, uniteDefaut: "pièces" },
+  { id: "aubergine", nom: "Aubergine", emoji: "🍆", famille: "solanacees", bonsVoisins: ["basilic", "melon"], soins: [{ jours: 10, label: "Installer un tuteur", emoji: "🪵" }, { jours: 14, label: "Pailler au pied", emoji: "🌾" }], type: "unit", distPlantsCm: "40-50 cm", distRangsCm: "60 cm", densiteM2: 3.5, repere: "Aime les sols chauds.", joursRepiquage: 45, semisSerre: [2, 3], plantationExt: [5], recolteJours: 110, arrosageJours: 1, serreOk: true, uniteDefaut: "pièces" },
   { id: "betterave", nom: "Betterave", emoji: "🔴", famille: "chenopodiacees", bonsVoisins: ["radis"], type: "unit", distPlantsCm: "8-10 cm", distRangsCm: "25-30 cm", densiteM2: 13.5, repere: "Plantation en quinconce possible.", semisExt: [4, 5, 6], recolteJours: 80, arrosageJours: 3, serreOk: false, uniteDefaut: "pièces" },
   { id: "carotte", nom: "Carotte", emoji: "🥕", famille: "apiacees", bonsVoisins: ["oignon", "poireau", "oeillet"], type: "row", distPlantsCm: "2-3 cm", distRangsCm: "20-25 cm", densiteM2: 350, repere: "Semis en ligne, éclaircissage indispensable.", semisExt: [4, 5, 6], recolteJours: 90, arrosageJours: 2, serreOk: false, uniteDefaut: "kg" },
-  { id: "chou", nom: "Chou", emoji: "🥬", famille: "brassicacees", bonsVoisins: ["thym", "oeillet"], type: "unit", distPlantsCm: "50-60 cm", distRangsCm: "60-70 cm", densiteM2: 2.5, repere: "Tasser le pied à la plantation.", soins: [{ jours: 10, label: "Pailler au pied", emoji: "🌾" }], semisSerre: [2, 3], plantationExt: [4, 5], recolteJours: 100, arrosageJours: 2, serreOk: true, uniteDefaut: "pièces" },
-  { id: "chourave", nom: "Chou-rave", emoji: "🥦", famille: "brassicacees", type: "unit", distPlantsCm: "25-30 cm", distRangsCm: "25-30 cm", densiteM2: 11, repere: "Rotation rapide, à intercaler avec des salades.", semisSerre: [3], plantationExt: [5], recolteJours: 60, arrosageJours: 2, serreOk: true, uniteDefaut: "pièces" },
+  { id: "chou", nom: "Chou", emoji: "🥬", famille: "brassicacees", bonsVoisins: ["thym", "oeillet"], type: "unit", distPlantsCm: "50-60 cm", distRangsCm: "60-70 cm", densiteM2: 2.5, repere: "Tasser le pied à la plantation.", joursRepiquage: 25, soins: [{ jours: 10, label: "Pailler au pied", emoji: "🌾" }], semisSerre: [2, 3], plantationExt: [4, 5], recolteJours: 100, arrosageJours: 2, serreOk: true, uniteDefaut: "pièces" },
+  { id: "chourave", nom: "Chou-rave", emoji: "🥦", famille: "brassicacees", type: "unit", distPlantsCm: "25-30 cm", distRangsCm: "25-30 cm", densiteM2: 11, repere: "Rotation rapide, à intercaler avec des salades.", joursRepiquage: 25, semisSerre: [3], plantationExt: [5], recolteJours: 60, arrosageJours: 2, serreOk: true, uniteDefaut: "pièces" },
   { id: "concombre", nom: "Concombre", emoji: "🥒", famille: "cucurbitacees", bonsVoisins: ["tournesol"], soins: [{ jours: 7, label: "Installer un treillis", emoji: "🪵" }, { jours: 10, label: "Pailler au pied", emoji: "🌾" }], type: "unit", distPlantsCm: "40 cm", distRangsCm: "80 cm", densiteM2: 2.5, repere: "Palissage conseillé pour gagner de la place.", semisSerre: [3, 4], plantationExt: [5, 6], recolteJours: 65, arrosageJours: 1, serreOk: true, uniteDefaut: "pièces" },
   { id: "courgette", nom: "Courgette", emoji: "🥒", famille: "cucurbitacees", soins: [{ jours: 10, label: "Pailler au pied", emoji: "🌾" }], type: "unit", distPlantsCm: "1 m", distRangsCm: "1 m", densiteM2: 1, repere: "Prévoir beaucoup d'espace.", semisSerre: [3, 4], plantationExt: [5, 6], recolteJours: 60, arrosageJours: 2, serreOk: true, uniteDefaut: "pièces" },
   { id: "courge", nom: "Courge", emoji: "🎃", famille: "cucurbitacees", bonsVoisins: ["mais", "haricotgrimpant", "oeillet"], soins: [{ jours: 10, label: "Pailler au pied", emoji: "🌾" }], type: "unit", distPlantsCm: "1-1.5 m", distRangsCm: "1.5-2 m", densiteM2: 0.5, repere: "Estimation (hors tableau du livre) : cultures traçantes, prévoir beaucoup d'espace au sol.", semisSerre: [3, 4], plantationExt: [5], recolteJours: 120, arrosageJours: 3, serreOk: true, uniteDefaut: "pièces" },
@@ -25,23 +25,23 @@ const CATALOGUE = [
   { id: "haricotnain", nom: "Haricot nain", emoji: "🫛", famille: "fabacees", type: "row", distPlantsCm: "8-10 cm", distRangsCm: "30-40 cm", densiteM2: 35, repere: "Semis direct en double rang serré.", semisExt: [5, 6], recolteJours: 70, arrosageJours: 2, serreOk: false, uniteDefaut: "kg" },
   { id: "mais", nom: "Maïs doux", emoji: "🌽", famille: "poacees", bonsVoisins: ["haricotgrimpant", "courge"], type: "unit", distPlantsCm: "25-30 cm", distRangsCm: "60-70 cm", densiteM2: 4.5, repere: "Planter en blocs multiples pour la pollinisation.", semisExt: [5], recolteJours: 80, arrosageJours: 2, serreOk: false, uniteDefaut: "pièces" },
   { id: "navet", nom: "Navet", emoji: "🥔", famille: "brassicacees", type: "row", distPlantsCm: "8-10 cm", distRangsCm: "25 cm", densiteM2: 17.5, repere: "Rotation courte, bon pour les successions.", semisExt: [3, 4, 8], recolteJours: 50, arrosageJours: 2, serreOk: false, uniteDefaut: "pièces" },
-  { id: "oignon", nom: "Oignon", emoji: "🧅", famille: "alliacees", bonsVoisins: ["carotte"], type: "row", distPlantsCm: "8-10 cm", distRangsCm: "25 cm", densiteM2: 22.5, repere: "Plantation en quinconce possible.", semisSerre: [2, 3], plantationExt: [4], recolteJours: 150, arrosageJours: 3, serreOk: true, uniteDefaut: "pièces" },
-  { id: "poireau", nom: "Poireau", emoji: "🧅", famille: "alliacees", bonsVoisins: ["carotte"], soins: [{ jours: 45, label: "Butter légèrement", emoji: "⛰️" }], type: "unit", distPlantsCm: "15 cm", distRangsCm: "30-40 cm", densiteM2: 17.5, repere: "Plantation profonde, prévoir un buttage.", semisSerre: [2, 3], plantationExt: [5, 6], recolteJours: 150, arrosageJours: 3, serreOk: true, uniteDefaut: "pièces" },
+  { id: "oignon", nom: "Oignon", emoji: "🧅", famille: "alliacees", bonsVoisins: ["carotte"], type: "row", distPlantsCm: "8-10 cm", distRangsCm: "25 cm", densiteM2: 22.5, repere: "Plantation en quinconce possible.", joursRepiquage: 35, semisSerre: [2, 3], plantationExt: [4], recolteJours: 150, arrosageJours: 3, serreOk: true, uniteDefaut: "pièces" },
+  { id: "poireau", nom: "Poireau", emoji: "🧅", famille: "alliacees", bonsVoisins: ["carotte"], soins: [{ jours: 45, label: "Butter légèrement", emoji: "⛰️" }], type: "unit", distPlantsCm: "15 cm", distRangsCm: "30-40 cm", densiteM2: 17.5, repere: "Plantation profonde, prévoir un buttage.", joursRepiquage: 70, semisSerre: [2, 3], plantationExt: [5, 6], recolteJours: 150, arrosageJours: 3, serreOk: true, uniteDefaut: "pièces" },
   { id: "pois", nom: "Petit pois", emoji: "🟢", famille: "fabacees", bonsVoisins: ["radis"], mauvaisVoisins: ["ail", "oignon", "poireau"], soins: [{ jours: 5, label: "Installer un filet ou des branches", emoji: "🪵" }], type: "row", distPlantsCm: "4-5 cm", distRangsCm: "40 cm", densiteM2: 22.5, repere: "Prévoir un filet ou des branches pour soutenir.", semisExt: [2, 3, 8], recolteJours: 65, arrosageJours: 2, serreOk: false, uniteDefaut: "kg" },
-  { id: "poivron", nom: "Poivron", emoji: "🫑", famille: "solanacees", soins: [{ jours: 10, label: "Installer un tuteur si besoin", emoji: "🪵" }, { jours: 14, label: "Pailler au pied", emoji: "🌾" }], type: "unit", distPlantsCm: "40-50 cm", distRangsCm: "50-60 cm", densiteM2: 3.5, repere: "Paillage obligatoire pour chaleur et humidité.", semisSerre: [2, 3], plantationExt: [5], recolteJours: 110, arrosageJours: 1, serreOk: true, uniteDefaut: "pièces" },
+  { id: "poivron", nom: "Poivron", emoji: "🫑", famille: "solanacees", soins: [{ jours: 10, label: "Installer un tuteur si besoin", emoji: "🪵" }, { jours: 14, label: "Pailler au pied", emoji: "🌾" }], type: "unit", distPlantsCm: "40-50 cm", distRangsCm: "50-60 cm", densiteM2: 3.5, repere: "Paillage obligatoire pour chaleur et humidité.", joursRepiquage: 45, semisSerre: [2, 3], plantationExt: [5], recolteJours: 110, arrosageJours: 1, serreOk: true, uniteDefaut: "pièces" },
   { id: "pdt", nom: "Pomme de terre", emoji: "🥔", famille: "solanacees", soins: [{ jours: 20, label: "1er buttage", emoji: "⛰️" }, { jours: 40, label: "2e buttage", emoji: "⛰️" }], type: "unit", distPlantsCm: "30-35 cm", distRangsCm: "60-70 cm", densiteM2: 4.5, repere: "Quinconce idéal, buttage nécessaire.", plantationExt: [4, 5], recolteJours: 110, arrosageJours: 4, serreOk: false, uniteDefaut: "kg" },
-  { id: "salade", nom: "Salade", emoji: "🥬", famille: "asteracees", bonsVoisins: ["radis"], type: "unit", distPlantsCm: "25-30 cm", distRangsCm: "25-30 cm", densiteM2: 11, repere: "Quinconce idéal pour optimiser la place.", semisSerre: [2, 3], semisExt: [4, 5, 6, 7], recolteJours: 55, arrosageJours: 1, serreOk: true, uniteDefaut: "pièces" },
-  { id: "tomate", nom: "Tomate", emoji: "🍅", famille: "solanacees", bonsVoisins: ["basilic", "oeillet"], soins: [{ jours: 10, label: "Installer un tuteur", emoji: "🪵" }, { jours: 14, label: "Pailler au pied", emoji: "🌾" }], type: "unit", distPlantsCm: "40-60 cm", distRangsCm: "70-80 cm", densiteM2: 2.5, repere: "Enterrer la tige profondément, prévoir un tuteur.", semisSerre: [2, 3], plantationExt: [5], recolteJours: 100, arrosageJours: 1, serreOk: true, uniteDefaut: "pièces" },
-  { id: "radis", nom: "Radis", emoji: "🔴", famille: "brassicacees", bonsVoisins: ["salade", "pois", "betterave", "ail"], type: "row", distPlantsCm: "2-3 cm", distRangsCm: "15 cm", densiteM2: 150, repere: "Estimation (hors tableau du livre) : resemer toutes les 2 semaines.", semisSerre: [2, 3], semisExt: [4, 5, 6, 7, 8], recolteJours: 28, arrosageJours: 1, serreOk: true, uniteDefaut: "pièces" },
-  { id: "piment", nom: "Piment", emoji: "🌶️", famille: "solanacees", soins: [{ jours: 10, label: "Installer un tuteur si besoin", emoji: "🪵" }, { jours: 14, label: "Pailler au pied", emoji: "🌾" }], type: "unit", distPlantsCm: "30-40 cm", distRangsCm: "50 cm", densiteM2: 5, repere: "Estimation (hors tableau du livre) : proche du poivron, aime la chaleur.", semisSerre: [2, 3], plantationExt: [5], recolteJours: 100, arrosageJours: 1, serreOk: true, uniteDefaut: "pièces" },
-  { id: "basilic", nom: "Basilic", emoji: "🌿", famille: "lamiacees", bonsVoisins: ["tomate"], type: "unit", distPlantsCm: "20-25 cm", distRangsCm: "25 cm", densiteM2: 16, repere: "Estimation (hors tableau du livre) : craint le froid, à sortir tard.", semisSerre: [3, 4], plantationExt: [5, 6], recolteJours: 60, arrosageJours: 1, serreOk: true, uniteDefaut: "poignées" },
+  { id: "salade", nom: "Salade", emoji: "🥬", famille: "asteracees", bonsVoisins: ["radis"], type: "unit", distPlantsCm: "25-30 cm", distRangsCm: "25-30 cm", densiteM2: 11, repere: "Quinconce idéal pour optimiser la place.", joursRepiquage: 25, semisSerre: [2, 3], semisExt: [4, 5, 6, 7], recolteJours: 55, arrosageJours: 1, serreOk: true, uniteDefaut: "pièces" },
+  { id: "tomate", nom: "Tomate", emoji: "🍅", famille: "solanacees", bonsVoisins: ["basilic", "oeillet"], soins: [{ jours: 10, label: "Installer un tuteur", emoji: "🪵" }, { jours: 14, label: "Pailler au pied", emoji: "🌾" }], type: "unit", distPlantsCm: "40-60 cm", distRangsCm: "70-80 cm", densiteM2: 2.5, repere: "Enterrer la tige profondément, prévoir un tuteur.", joursRepiquage: 45, semisSerre: [2, 3], plantationExt: [5], recolteJours: 100, arrosageJours: 1, serreOk: true, uniteDefaut: "pièces" },
+  { id: "radis", nom: "Radis", emoji: "🔴", famille: "brassicacees", bonsVoisins: ["salade", "pois", "betterave", "ail"], type: "row", distPlantsCm: "2-3 cm", distRangsCm: "15 cm", densiteM2: 150, repere: "Estimation (hors tableau du livre) : resemer toutes les 2 semaines.", joursRepiquage: 20, semisSerre: [2, 3], semisExt: [4, 5, 6, 7, 8], recolteJours: 28, arrosageJours: 1, serreOk: true, uniteDefaut: "pièces" },
+  { id: "piment", nom: "Piment", emoji: "🌶️", famille: "solanacees", soins: [{ jours: 10, label: "Installer un tuteur si besoin", emoji: "🪵" }, { jours: 14, label: "Pailler au pied", emoji: "🌾" }], type: "unit", distPlantsCm: "30-40 cm", distRangsCm: "50 cm", densiteM2: 5, repere: "Estimation (hors tableau du livre) : proche du poivron, aime la chaleur.", joursRepiquage: 45, semisSerre: [2, 3], plantationExt: [5], recolteJours: 100, arrosageJours: 1, serreOk: true, uniteDefaut: "pièces" },
+  { id: "basilic", nom: "Basilic", emoji: "🌿", famille: "lamiacees", bonsVoisins: ["tomate"], type: "unit", distPlantsCm: "20-25 cm", distRangsCm: "25 cm", densiteM2: 16, repere: "Estimation (hors tableau du livre) : craint le froid, à sortir tard.", joursRepiquage: 25, semisSerre: [3, 4], plantationExt: [5, 6], recolteJours: 60, arrosageJours: 1, serreOk: true, uniteDefaut: "poignées" },
   { id: "persil", nom: "Persil", emoji: "🌱", famille: "apiacees", type: "unit", distPlantsCm: "15-20 cm", distRangsCm: "25 cm", densiteM2: 25, repere: "Estimation (hors tableau du livre) : germination lente, tenir humide.", semisSerre: [3], semisExt: [4, 8], recolteJours: 70, arrosageJours: 2, serreOk: true, uniteDefaut: "poignées" },
   { id: "ciboulette", nom: "Ciboulette", emoji: "🌿", famille: "alliacees", type: "unit", distPlantsCm: "20 cm", distRangsCm: "25 cm", densiteM2: 20, repere: "Estimation (hors tableau du livre) : vivace, repart chaque année.", semisSerre: [2, 3], plantationExt: [4, 5], recolteJours: 60, arrosageJours: 2, serreOk: true, uniteDefaut: "poignées" },
   { id: "thym", nom: "Thym", emoji: "🌿", famille: "lamiacees", bonsVoisins: ["chou"], type: "unit", distPlantsCm: "30 cm", distRangsCm: "30 cm", densiteM2: 11, repere: "Estimation (hors tableau du livre) : vivace, résiste bien à la sécheresse.", plantationExt: [4, 5], recolteJours: 90, arrosageJours: 6, serreOk: false, uniteDefaut: "poignées" },
-  { id: "brocoli", nom: "Brocoli", emoji: "🥦", famille: "brassicacees", bonsVoisins: ["thym"], soins: [{ jours: 10, label: "Pailler au pied", emoji: "🌾" }], type: "unit", distPlantsCm: "40-50 cm", distRangsCm: "50-60 cm", densiteM2: 3.5, repere: "Estimation (hors tableau du livre) : proche du chou, récolter le bouquet central avant floraison.", semisSerre: [2, 3], plantationExt: [4, 5], recolteJours: 80, arrosageJours: 2, serreOk: true, uniteDefaut: "pièces" },
-  { id: "choufleur", nom: "Chou-fleur", emoji: "🥬", famille: "brassicacees", bonsVoisins: ["thym"], soins: [{ jours: 10, label: "Pailler au pied", emoji: "🌾" }], type: "unit", distPlantsCm: "50-60 cm", distRangsCm: "60-70 cm", densiteM2: 2.5, repere: "Estimation (hors tableau du livre) : rabattre quelques feuilles sur la pomme pour la protéger du soleil.", semisSerre: [2, 3], plantationExt: [4, 5], recolteJours: 90, arrosageJours: 2, serreOk: true, uniteDefaut: "pièces" },
+  { id: "brocoli", nom: "Brocoli", emoji: "🥦", famille: "brassicacees", bonsVoisins: ["thym"], soins: [{ jours: 10, label: "Pailler au pied", emoji: "🌾" }], type: "unit", distPlantsCm: "40-50 cm", distRangsCm: "50-60 cm", densiteM2: 3.5, repere: "Estimation (hors tableau du livre) : proche du chou, récolter le bouquet central avant floraison.", joursRepiquage: 25, semisSerre: [2, 3], plantationExt: [4, 5], recolteJours: 80, arrosageJours: 2, serreOk: true, uniteDefaut: "pièces" },
+  { id: "choufleur", nom: "Chou-fleur", emoji: "🥬", famille: "brassicacees", bonsVoisins: ["thym"], soins: [{ jours: 10, label: "Pailler au pied", emoji: "🌾" }], type: "unit", distPlantsCm: "50-60 cm", distRangsCm: "60-70 cm", densiteM2: 2.5, repere: "Estimation (hors tableau du livre) : rabattre quelques feuilles sur la pomme pour la protéger du soleil.", joursRepiquage: 25, semisSerre: [2, 3], plantationExt: [4, 5], recolteJours: 90, arrosageJours: 2, serreOk: true, uniteDefaut: "pièces" },
   { id: "oeillet", nom: "Œillet d'Inde", emoji: "🌼", famille: "asteracees", bonsVoisins: ["tomate", "chou", "courge", "carotte"], type: "unit", distPlantsCm: "25-30 cm", distRangsCm: "30 cm", densiteM2: 11, repere: "Plante répulsive contre les nématodes : idéale en bordure de tomates, choux ou courges.", semisSerre: [3, 4], plantationExt: [5], recolteJours: 60, arrosageJours: 3, serreOk: true, uniteDefaut: "pièces" },
-  { id: "melon", nom: "Melon", emoji: "🍈", famille: "cucurbitacees", bonsVoisins: ["aubergine"], soins: [{ jours: 10, label: "Pailler au pied", emoji: "🌾" }], type: "unit", distPlantsCm: "50-60 cm", distRangsCm: "80-100 cm", densiteM2: 2, repere: "Estimation (hors tableau du livre) : planter en retrait d'une culture haute (aubergine, maïs) qui lui offre un peu d'ombre.", semisSerre: [2, 3], plantationExt: [5], recolteJours: 95, arrosageJours: 2, serreOk: true, uniteDefaut: "pièces" },
+  { id: "melon", nom: "Melon", emoji: "🍈", famille: "cucurbitacees", bonsVoisins: ["aubergine"], soins: [{ jours: 10, label: "Pailler au pied", emoji: "🌾" }], type: "unit", distPlantsCm: "50-60 cm", distRangsCm: "80-100 cm", densiteM2: 2, repere: "Estimation (hors tableau du livre) : planter en retrait d'une culture haute (aubergine, maïs) qui lui offre un peu d'ombre.", joursRepiquage: 25, semisSerre: [2, 3], plantationExt: [5], recolteJours: 95, arrosageJours: 2, serreOk: true, uniteDefaut: "pièces" },
 ];
 
 // Familles botaniques (p. 88-89) : à ne pas replanter au même endroit
@@ -155,6 +155,7 @@ export default function App() {
   const [emptySince, setEmptySince] = useState({});
   const [doneTasks, setDoneTasks] = useState({});
   const [harvests, setHarvests] = useState([]);
+  const [nursery, setNursery] = useState([]); // [{ id, vegetableId, date, notes }]
   const [weather, setWeather] = useState(null); // { data, updatedAt, loading, error }
   const [selectedCell, setSelectedCell] = useState(null);
   const [selectedDay, setSelectedDay] = useState(null);
@@ -173,6 +174,7 @@ export default function App() {
           setRotationHistory(parsed.rotationHistory || {});
           setEmptySince(parsed.emptySince || {});
           setDoneTasks(parsed.doneTasks || {});
+          setNursery(parsed.nursery || []);
         }
       } catch (e) {
         // premier lancement, rien à charger
@@ -186,13 +188,13 @@ export default function App() {
     (async () => {
       setSaveState("saving");
       try {
-        localStorage.setItem("garden-data", JSON.stringify({ plantings, harvests, rotationHistory, emptySince, doneTasks }));
+        localStorage.setItem("garden-data", JSON.stringify({ plantings, harvests, rotationHistory, emptySince, doneTasks, nursery }));
         setSaveState("saved");
       } catch (e) {
         setSaveState("error");
       }
     })();
-  }, [plantings, harvests, rotationHistory, emptySince, doneTasks, loaded]);
+  }, [plantings, harvests, rotationHistory, emptySince, doneTasks, nursery, loaded]);
 
   useEffect(() => {
     (async () => {
@@ -314,6 +316,14 @@ export default function App() {
     });
   }, [plantings]);
 
+  const addNurseryItem = useCallback((vegetableId, date, notes) => {
+    setNursery((prev) => [...prev, { id: uid(), vegetableId, date, notes: notes || "" }]);
+  }, []);
+
+  const removeNurseryItem = useCallback((id) => {
+    setNursery((prev) => prev.filter((n) => n.id !== id));
+  }, []);
+
   const upsertHarvest = useCallback((entry) => {
     setHarvests((prev) => {
       const exists = prev.some((h) => h.id === entry.id);
@@ -338,7 +348,7 @@ export default function App() {
       const zoneAbritee = ZONES.find((z) => z.id === zoneId)?.greenhouse;
       const pluiePertinente = !zoneAbritee && weather?.data?.pluieAujourdhui;
 
-      if (ageDays >= 0 && ageDays <= 21 && ageDays % veg.arrosageJours === 0 && !pluiePertinente) {
+      if (ageDays >= 0 && ageDays <= 21 && ageDays % veg.arrosageJours === 0) {
         list.push({
           key: key + "-water-" + today,
           zoneId,
@@ -346,7 +356,7 @@ export default function App() {
           emoji: veg.emoji,
           nom: veg.nom,
           type: "arrosage",
-          label: `Arroser : ${veg.nom}`,
+          label: pluiePertinente ? `Arroser : ${veg.nom} (🌧️ pluie prévue, mais pas garantie)` : `Arroser : ${veg.nom}`,
           urgent: true,
         });
       }
@@ -408,6 +418,70 @@ export default function App() {
       });
     });
 
+    // Rappel général de surveillance (ravageurs, maladies), tant qu'il y a des cultures en cours.
+    if (Object.keys(plantings).length > 0) {
+      list.push({
+        key: "surveillance-" + today,
+        zoneId: null,
+        zone: "Tout le jardin",
+        emoji: "🔎",
+        nom: "Surveillance",
+        type: "surveillance",
+        label: "Faire un tour du jardin : ravageurs, maladies, mauvaises herbes",
+        urgent: false,
+      });
+    }
+
+    // Suggestions de semis/plantation selon le mois en cours (calendrier du livre).
+    const moisActuel = new Date().getMonth();
+    const anneeActuelle = new Date().getFullYear();
+    CATALOGUE.forEach((veg) => {
+      let action = null;
+      if (veg.semisSerre?.includes(moisActuel)) action = { verbe: "Semer sous serre", ordre: 0 };
+      else if (veg.semisExt?.includes(moisActuel)) action = { verbe: "Semer en extérieur", ordre: 1 };
+      else if (veg.plantationExt?.includes(moisActuel)) action = { verbe: "Planter en extérieur", ordre: 2 };
+      if (action) {
+        list.push({
+          key: `semis-${veg.id}-${anneeActuelle}-${moisActuel}`,
+          zoneId: null,
+          zone: null,
+          emoji: veg.emoji,
+          nom: veg.nom,
+          type: "semis",
+          ordre: action.ordre,
+          label: `${action.verbe} : ${veg.nom}`,
+          urgent: false,
+        });
+      }
+    });
+
+    // Rappels de repiquage pour les semis en pépinière.
+    nursery.forEach((item) => {
+      const veg = CATALOGUE.find((v) => v.id === item.vegetableId);
+      if (!veg) return;
+      const joursRepiquage = veg.joursRepiquage || 30;
+      const repiquageDate = addDays(item.date, joursRepiquage);
+      const daysToRepiquage = daysBetween(today, repiquageDate);
+      if (daysToRepiquage <= 5) {
+        list.push({
+          key: "nursery-" + item.id,
+          nurseryId: item.id,
+          zoneId: null,
+          zone: "Pépinière (serre)",
+          emoji: veg.emoji,
+          nom: veg.nom,
+          type: "repiquage",
+          label:
+            daysToRepiquage > 0
+              ? `Repiquer bientôt : ${veg.nom} (dans ${daysToRepiquage} j)`
+              : daysToRepiquage === 0
+              ? `Repiquer : ${veg.nom} (prêt aujourd'hui)`
+              : `Repiquer : ${veg.nom} (prêt depuis ${-daysToRepiquage} j)`,
+          urgent: daysToRepiquage <= 0,
+        });
+      }
+    });
+
     Object.entries(emptySince).forEach(([key, since]) => {
       if (plantings[key]) return; // la case a été replantée depuis
       const daysEmpty = daysBetween(since, today);
@@ -429,7 +503,7 @@ export default function App() {
     return list
       .filter((t) => !doneTasks[t.key])
       .sort((a, b) => (a.urgent === b.urgent ? 0 : a.urgent ? -1 : 1));
-  }, [plantings, emptySince, doneTasks, weather]);
+  }, [plantings, emptySince, doneTasks, weather, nursery]);
 
   const markTaskDone = useCallback((key) => {
     setDoneTasks((prev) => ({ ...prev, [key]: true }));
@@ -441,6 +515,17 @@ export default function App() {
   const harvestTasks = tasks.filter((t) => t.type === "recolte");
   const soinTasks = tasks.filter((t) => t.type === "soin");
   const solNuTasks = tasks.filter((t) => t.type === "solnu");
+  const surveillanceTasks = tasks.filter((t) => t.type === "surveillance");
+  const semisTasks = tasks.filter((t) => t.type === "semis").sort((a, b) => a.ordre - b.ordre);
+  const repiquageTasks = tasks.filter((t) => t.type === "repiquage");
+
+  const marquerTousArroses = useCallback(() => {
+    setDoneTasks((prev) => {
+      const next = { ...prev };
+      wateringTasks.forEach((t) => { next[t.key] = true; });
+      return next;
+    });
+  }, [wateringTasks]);
 
   return (
     <div style={styles.app}>
@@ -460,6 +545,7 @@ export default function App() {
       <nav style={styles.tabs}>
         {[
           ["jardin", "🗺️ Parcelle"],
+          ["pepiniere", `🌱 Pépinière${nursery.length ? ` (${nursery.length})` : ""}`],
           ["taches", `✅ Tâches${tasks.length ? ` (${tasks.length})` : ""}`],
           ["calendrier", "📆 Calendrier"],
           ["semis", "🌤️ Semis"],
@@ -475,6 +561,10 @@ export default function App() {
         <JardinView activeZone={activeZone} setActiveZone={setActiveZone} plantings={plantings} setSelectedCell={setSelectedCell} />
       )}
 
+      {tab === "pepiniere" && (
+        <PepiniereView nursery={nursery} onAdd={addNurseryItem} onRemove={removeNurseryItem} />
+      )}
+
       {tab === "taches" && (
         <TachesView
           wateringTasks={wateringTasks}
@@ -482,9 +572,14 @@ export default function App() {
           soinTasks={soinTasks}
           solNuTasks={solNuTasks}
           gelTasks={gelTasks}
+          surveillanceTasks={surveillanceTasks}
+          semisTasks={semisTasks}
+          repiquageTasks={repiquageTasks}
           weather={weather}
           onRefreshWeather={fetchWeather}
           onDone={markTaskDone}
+          onMarkAllWatered={marquerTousArroses}
+          onRepiquer={(t) => removeNurseryItem(t.nurseryId)}
           onLogHarvest={(t) =>
             setSelectedDay({
               date: todayISO(),
@@ -625,6 +720,82 @@ function JardinView({ activeZone, setActiveZone, plantings, setSelectedCell }) {
   );
 }
 
+function PepiniereView({ nursery, onAdd, onRemove }) {
+  const [showForm, setShowForm] = useState(false);
+  const [vegetableId, setVegetableId] = useState(CATALOGUE[0].id);
+  const [date, setDate] = useState(todayISO());
+  const [notes, setNotes] = useState("");
+
+  const items = [...nursery].sort((a, b) => (a.date < b.date ? 1 : -1));
+
+  return (
+    <div style={styles.section}>
+      <div style={styles.pepiniereIntro}>
+        🌱 Suis ici tes semis en godets/plaques sous serre, avant qu'ils soient repiqués dans une case. L'appli te rappellera dans l'onglet Tâches quand ce sera le moment.
+      </div>
+
+      {!showForm && (
+        <button style={styles.primaryBtn} onClick={() => setShowForm(true)}>+ Ajouter un semis en pépinière</button>
+      )}
+
+      {showForm && (
+        <div style={styles.densityBox}>
+          <label style={styles.label}>Légume</label>
+          <select style={styles.select} value={vegetableId} onChange={(e) => setVegetableId(e.target.value)}>
+            {CATALOGUE.map((v) => (
+              <option key={v.id} value={v.id}>{v.emoji} {v.nom}</option>
+            ))}
+          </select>
+
+          <label style={styles.label}>Date de semis</label>
+          <input type="date" style={styles.select} value={date} onChange={(e) => setDate(e.target.value)} />
+
+          <label style={styles.label}>Note (facultatif)</label>
+          <input type="text" style={styles.select} value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="ex : plaque alvéolée, 2e rang" />
+
+          <div style={styles.modalActions}>
+            <button
+              style={styles.primaryBtn}
+              onClick={() => {
+                onAdd(vegetableId, date, notes);
+                setShowForm(false);
+                setNotes("");
+              }}
+            >
+              Ajouter
+            </button>
+          </div>
+        </div>
+      )}
+
+      {items.length === 0 && !showForm && (
+        <div style={styles.empty}>Aucun semis en pépinière pour l'instant.</div>
+      )}
+
+      {items.length > 0 && (
+        <div style={{ ...styles.taskList, marginTop: 16 }}>
+          {items.map((item) => {
+            const veg = CATALOGUE.find((v) => v.id === item.vegetableId);
+            const joursDepuisSemis = daysBetween(item.date, todayISO());
+            return (
+              <div key={item.id} style={styles.taskCard}>
+                <span style={styles.taskEmoji}>{veg?.emoji}</span>
+                <div style={{ flex: 1 }}>
+                  <div style={styles.taskLabel}>{veg?.nom}</div>
+                  <div style={styles.taskZone}>
+                    Semé le {item.date} ({joursDepuisSemis} j){item.notes ? ` — ${item.notes}` : ""}
+                  </div>
+                </div>
+                <button style={styles.doneBtn} onClick={() => onRemove(item.id)}>✓ Repiqué</button>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function CellModal({ selectedCell, plantings, rotationHistory, onClose, onSave, onHarvest }) {
   const key = cellKey(selectedCell.zoneId, selectedCell.r, selectedCell.c);
   const existing = plantings[key];
@@ -735,8 +906,14 @@ function CellModal({ selectedCell, plantings, rotationHistory, onClose, onSave, 
 /* Vue : tâches                                                        */
 /* ------------------------------------------------------------------ */
 
-function TachesView({ wateringTasks, harvestTasks, soinTasks, solNuTasks, gelTasks, weather, onRefreshWeather, onDone, onLogHarvest }) {
-  const allEmpty = wateringTasks.length === 0 && harvestTasks.length === 0 && soinTasks.length === 0 && solNuTasks.length === 0 && gelTasks.length === 0;
+function TachesView({ wateringTasks, harvestTasks, soinTasks, solNuTasks, gelTasks, surveillanceTasks, semisTasks, repiquageTasks, weather, onRefreshWeather, onDone, onMarkAllWatered, onRepiquer, onLogHarvest }) {
+  const allEmpty =
+    wateringTasks.length === 0 &&
+    harvestTasks.length === 0 &&
+    soinTasks.length === 0 &&
+    solNuTasks.length === 0 &&
+    gelTasks.length === 0 &&
+    repiquageTasks.length === 0;
 
   return (
     <div style={styles.section}>
@@ -759,6 +936,24 @@ function TachesView({ wateringTasks, harvestTasks, soinTasks, solNuTasks, gelTas
                   <div style={styles.taskZone}>{t.zone}</div>
                 </div>
                 <button style={styles.doneBtn} onClick={() => onDone(t.key)}>✓ Fait</button>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+
+      {repiquageTasks.length > 0 && (
+        <>
+          <h3 style={styles.taskGroupTitle}>🌱 Pépinière — à repiquer</h3>
+          <div style={styles.taskList}>
+            {repiquageTasks.map((t) => (
+              <div key={t.key} style={{ ...styles.taskCard, borderColor: t.urgent ? "#B5651D" : "#D8D0BC" }}>
+                <span style={styles.taskEmoji}>{t.emoji}</span>
+                <div style={{ flex: 1 }}>
+                  <div style={styles.taskLabel}>{t.label}</div>
+                  <div style={styles.taskZone}>{t.zone}</div>
+                </div>
+                <button style={styles.doneBtn} onClick={() => onRepiquer(t)}>✓ Repiqué</button>
               </div>
             ))}
           </div>
@@ -803,7 +998,10 @@ function TachesView({ wateringTasks, harvestTasks, soinTasks, solNuTasks, gelTas
 
       {wateringTasks.length > 0 && (
         <>
-          <h3 style={styles.taskGroupTitle}>💧 À arroser aujourd'hui</h3>
+          <div style={styles.taskGroupHeaderRow}>
+            <h3 style={styles.taskGroupTitle}>💧 À arroser aujourd'hui</h3>
+            <button style={styles.smallBtn} onClick={onMarkAllWatered}>✓ Tout arrosé</button>
+          </div>
           <div style={styles.taskList}>
             {wateringTasks.map((t) => (
               <div key={t.key} style={styles.taskCard}>
@@ -834,6 +1032,40 @@ function TachesView({ wateringTasks, harvestTasks, soinTasks, solNuTasks, gelTas
                   <button style={styles.smallBtn} onClick={() => onLogHarvest(t)}>Enregistrer</button>
                   <button style={styles.doneBtn} onClick={() => onDone(t.key)}>✓ Fait</button>
                 </span>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+
+      {surveillanceTasks.length > 0 && (
+        <>
+          <h3 style={styles.taskGroupTitle}>🔎 Surveillance</h3>
+          <div style={styles.taskList}>
+            {surveillanceTasks.map((t) => (
+              <div key={t.key} style={styles.taskCard}>
+                <span style={styles.taskEmoji}>{t.emoji}</span>
+                <div style={{ flex: 1 }}>
+                  <div style={styles.taskLabel}>{t.label}</div>
+                </div>
+                <button style={styles.doneBtn} onClick={() => onDone(t.key)}>✓ Fait</button>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+
+      {semisTasks.length > 0 && (
+        <>
+          <h3 style={styles.taskGroupTitle}>🌤️ Ce mois-ci, tu peux semer/planter</h3>
+          <div style={styles.taskList}>
+            {semisTasks.map((t) => (
+              <div key={t.key} style={styles.taskCard}>
+                <span style={styles.taskEmoji}>{t.emoji}</span>
+                <div style={{ flex: 1 }}>
+                  <div style={styles.taskLabel}>{t.label}</div>
+                </div>
+                <button style={styles.doneBtn} onClick={() => onDone(t.key)}>✓ Fait</button>
               </div>
             ))}
           </div>
@@ -912,7 +1144,7 @@ function MeteoWidget({ weather, onRefresh }) {
             {data.risqueOrage && <span style={styles.meteoTagAlert}>⛈️ Orage possible</span>}
           </div>
           {data.pluieAujourdhui && (
-            <div style={styles.meteoNote}>💧 Arrosage extérieur masqué aujourd'hui grâce à la pluie prévue — la serre, elle, reste à arroser normalement.</div>
+            <div style={styles.meteoNote}>💧 Pluie annoncée dehors — les tâches d'arrosage restent affichées au cas où (la météo se trompe parfois). La serre, elle, est de toute façon à arroser normalement.</div>
           )}
           <div style={styles.meteoUpdated}>Mis à jour à {formatHeureMaj(weather.updatedAt)}</div>
         </>
@@ -1405,6 +1637,7 @@ const styles = {
   grid: { display: "grid", gap: 3, padding: 8, borderRadius: 8 },
   cell: { aspectRatio: "1 / 1", border: "1px solid #D8D0BC", borderRadius: 3, fontSize: 13, display: "flex", alignItems: "center", justifyContent: "center", padding: 0 },
   hint: { fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontSize: 11.5, color: "#8A8266", marginTop: 8 },
+  pepiniereIntro: { fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontSize: 12.5, color: "#4A4636", lineHeight: 1.5, background: "#EAF1EF", border: "1px solid #6E9C96", borderRadius: 8, padding: "10px 12px", marginBottom: 14 },
   overlay: { position: "fixed", inset: 0, background: "rgba(43,46,38,0.45)", display: "flex", alignItems: "center", justifyContent: "center", padding: 16, zIndex: 50 },
   modal: { background: "#F2EEE3", borderRadius: 10, padding: 20, width: "100%", maxWidth: 360, maxHeight: "85vh", overflowY: "auto", border: "1px solid #D8D0BC", fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" },
   modalHeader: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 },
@@ -1423,6 +1656,7 @@ const styles = {
   linkBtnDanger: { background: "none", border: "none", color: "#B5651D", fontSize: 12, textDecoration: "underline", padding: 0 },
   empty: { fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", color: "#6E6752", fontSize: 14, padding: "30px 0", textAlign: "center" },
   taskGroupTitle: { fontSize: 15, color: "#33513F", marginTop: 18, marginBottom: 8 },
+  taskGroupHeaderRow: { display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 18, marginBottom: 8, gap: 8 },
   taskList: { display: "flex", flexDirection: "column", gap: 8 },
   taskCard: { display: "flex", alignItems: "center", gap: 10, background: "#fff", border: "1px solid #D8D0BC", borderRadius: 8, padding: "10px 12px", fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" },
   taskEmoji: { fontSize: 20 },
