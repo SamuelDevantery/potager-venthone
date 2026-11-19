@@ -111,17 +111,39 @@ function daysBetween(isoA, isoB) {
   return Math.round((b - a) / 86400000);
 }
 
+// Supprime les validations de tâches devenues inutiles (tâches quotidiennes
+// des jours passés, suggestions de semis des mois passés) pour que
+// localStorage ne grossisse pas indéfiniment.
+function pruneDoneTasks(done) {
+  const today = todayISO();
+  const now = new Date();
+  const moisCourant = now.getFullYear() * 12 + now.getMonth();
+  const next = {};
+  Object.keys(done || {}).forEach((k) => {
+    const daily = k.match(/(?:-water-|-gel-|^surveillance-|^chaleur-).*?(\d{4}-\d{2}-\d{2})$/);
+    if (daily && daily[1] < today) return;
+    const semis = k.match(/^semis-.+-(\d{4})-(\d{1,2})$/);
+    if (semis && Number(semis[1]) * 12 + Number(semis[2]) < moisCourant) return;
+    next[k] = done[k];
+  });
+  return next;
+}
+
 function uid() {
   return Math.random().toString(36).slice(2, 10);
 }
 
 // Vérifie si la famille botanique du légume a déjà occupé cette case
 // récemment (moins que le nombre d'années de rotation recommandé).
-function getRotationWarning(key, vegetableId, rotationHistory) {
+// `current` = plantation actuellement dans la case (en cours d'édition) :
+// on l'ignore pour qu'une simple correction ne déclenche pas d'alerte sur elle-même.
+function getRotationWarning(key, vegetableId, rotationHistory, current) {
   const veg = CATALOGUE.find((v) => v.id === vegetableId);
   if (!veg) return null;
   const famille = FAMILLES[veg.famille];
-  const history = rotationHistory[key] || [];
+  const history = (rotationHistory[key] || []).filter(
+    (h) => !(current && h.vegetableId === current.vegetableId && h.date === current.date)
+  );
   let mostRecent = null;
   history.forEach((h) => {
     const hVeg = CATALOGUE.find((v) => v.id === h.vegetableId);
@@ -173,7 +195,7 @@ export default function App() {
           setHarvests(parsed.harvests || []);
           setRotationHistory(parsed.rotationHistory || {});
           setEmptySince(parsed.emptySince || {});
-          setDoneTasks(parsed.doneTasks || {});
+          setDoneTasks(pruneDoneTasks(parsed.doneTasks));
           setNursery(parsed.nursery || []);
         }
       } catch (e) {
@@ -295,10 +317,14 @@ export default function App() {
   const setCellPlanting = useCallback((zoneId, r, c, data) => {
     const key = cellKey(zoneId, r, c);
     const old = plantings[key];
-    if (old) {
+    // Une simple correction (même légume, autre date ou quantité) n'alimente pas
+    // l'historique de rotation : seul un changement de légume ou un retrait le fait.
+    const changementDeCulture = old && (data === null || data.vegetableId !== old.vegetableId);
+    if (changementDeCulture) {
       setRotationHistory((h) => {
         const list = h[key] ? [...h[key]] : [];
-        list.push({ vegetableId: old.vegetableId, date: old.date });
+        const dejaPresent = list.some((e) => e.vegetableId === old.vegetableId && e.date === old.date);
+        if (!dejaPresent) list.push({ vegetableId: old.vegetableId, date: old.date });
         return { ...h, [key]: list };
       });
     }
@@ -350,7 +376,7 @@ export default function App() {
 
       if (ageDays >= 0 && ageDays <= 21 && ageDays % veg.arrosageJours === 0) {
         list.push({
-          key: key + "-water-" + today,
+          key: key + "-water-" + p.date + "-" + today,
           zoneId,
           zone: ZONES.find((z) => z.id === zoneId)?.nom,
           emoji: veg.emoji,
@@ -361,7 +387,7 @@ export default function App() {
         });
       }
 
-      if (weather?.data?.risqueGel && FROST_SENSITIVE.has(veg.id)) {
+      if (weather?.data?.risqueGel && !zoneAbritee && FROST_SENSITIVE.has(veg.id)) {
         list.push({
           key: key + "-gel-" + today,
           zoneId,
@@ -417,6 +443,20 @@ export default function App() {
         }
       });
     });
+
+    // Alerte chaleur : une seule tâche globale par jour si canicule annoncée.
+    if (weather?.data?.risqueCanicule && Object.keys(plantings).length > 0) {
+      list.push({
+        key: "chaleur-" + today,
+        zoneId: null,
+        zone: "Tout le jardin",
+        emoji: "🥵",
+        nom: "Canicule",
+        type: "chaleur",
+        label: "Canicule annoncée : arroser tôt le matin ou le soir, pailler épais, aérer et ombrer la serre",
+        urgent: true,
+      });
+    }
 
     // Rappel général de surveillance (ravageurs, maladies), tant qu'il y a des cultures en cours.
     if (Object.keys(plantings).length > 0) {
@@ -510,6 +550,7 @@ export default function App() {
   }, []);
 
   const gelTasks = tasks.filter((t) => t.type === "gel");
+  const chaleurTasks = tasks.filter((t) => t.type === "chaleur");
 
   const wateringTasks = tasks.filter((t) => t.type === "arrosage");
   const harvestTasks = tasks.filter((t) => t.type === "recolte");
@@ -572,6 +613,7 @@ export default function App() {
           soinTasks={soinTasks}
           solNuTasks={solNuTasks}
           gelTasks={gelTasks}
+          chaleurTasks={chaleurTasks}
           surveillanceTasks={surveillanceTasks}
           semisTasks={semisTasks}
           repiquageTasks={repiquageTasks}
@@ -812,7 +854,7 @@ function CellModal({ selectedCell, plantings, rotationHistory, onClose, onSave, 
     if (v?.type === "row") setQuantity(Math.max(1, Math.round(v.densiteM2 * cellSurfaceM2)));
   };
 
-  const rotationWarning = getRotationWarning(key, vegetableId, rotationHistory || {});
+  const rotationWarning = getRotationWarning(key, vegetableId, rotationHistory || {}, existing);
   const familleNom = FAMILLES[veg?.famille]?.nom;
   const voisins = (veg?.bonsVoisins || []).map((id) => CATALOGUE.find((v) => v.id === id)).filter(Boolean);
   const mauvaisVoisins = (veg?.mauvaisVoisins || []).map((id) => CATALOGUE.find((v) => v.id === id)).filter(Boolean);
@@ -906,13 +948,14 @@ function CellModal({ selectedCell, plantings, rotationHistory, onClose, onSave, 
 /* Vue : tâches                                                        */
 /* ------------------------------------------------------------------ */
 
-function TachesView({ wateringTasks, harvestTasks, soinTasks, solNuTasks, gelTasks, surveillanceTasks, semisTasks, repiquageTasks, weather, onRefreshWeather, onDone, onMarkAllWatered, onRepiquer, onLogHarvest }) {
+function TachesView({ wateringTasks, harvestTasks, soinTasks, solNuTasks, gelTasks, chaleurTasks, surveillanceTasks, semisTasks, repiquageTasks, weather, onRefreshWeather, onDone, onMarkAllWatered, onRepiquer, onLogHarvest }) {
   const allEmpty =
     wateringTasks.length === 0 &&
     harvestTasks.length === 0 &&
     soinTasks.length === 0 &&
     solNuTasks.length === 0 &&
     gelTasks.length === 0 &&
+    chaleurTasks.length === 0 &&
     repiquageTasks.length === 0;
 
   return (
@@ -929,6 +972,24 @@ function TachesView({ wateringTasks, harvestTasks, soinTasks, solNuTasks, gelTas
           <h3 style={styles.taskGroupTitle}>❄️ Risque de gel cette nuit</h3>
           <div style={styles.taskList}>
             {gelTasks.map((t) => (
+              <div key={t.key} style={{ ...styles.taskCard, borderColor: "#B5651D" }}>
+                <span style={styles.taskEmoji}>{t.emoji}</span>
+                <div style={{ flex: 1 }}>
+                  <div style={styles.taskLabel}>{t.label}</div>
+                  <div style={styles.taskZone}>{t.zone}</div>
+                </div>
+                <button style={styles.doneBtn} onClick={() => onDone(t.key)}>✓ Fait</button>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+
+      {chaleurTasks.length > 0 && (
+        <>
+          <h3 style={styles.taskGroupTitle}>🥵 Alerte chaleur</h3>
+          <div style={styles.taskList}>
+            {chaleurTasks.map((t) => (
               <div key={t.key} style={{ ...styles.taskCard, borderColor: "#B5651D" }}>
                 <span style={styles.taskEmoji}>{t.emoji}</span>
                 <div style={{ flex: 1 }}>
@@ -1269,14 +1330,19 @@ function CalendrierMois({ plantings, harvests, onSelectDay }) {
 
 function DayModal({ selectedDay, plantings, harvests, onClose, onSaveHarvest, onDeleteHarvest }) {
   const { date, editId, prefill } = selectedDay;
-  const editing = editId ? harvests.find((h) => h.id === editId) : null;
+  const initial = editId ? harvests.find((h) => h.id === editId) : null;
 
-  const [showForm, setShowForm] = useState(!!editing || !!prefill);
-  const [vegetableId, setVegetableId] = useState(editing?.vegetableId || prefill?.vegetableId || CATALOGUE[0].id);
-  const [quantity, setQuantity] = useState(editing?.quantity ?? 1);
-  const [unit, setUnit] = useState(editing?.unit || CATALOGUE.find((v) => v.id === (prefill?.vegetableId || CATALOGUE[0].id))?.uniteDefaut || "pièces");
-  const [note, setNote] = useState(editing?.note || "");
-  const [entryDate, setEntryDate] = useState(editing?.date || date);
+  // Id de la récolte en cours de modification (null = nouvelle récolte).
+  const [editingId, setEditingId] = useState(initial?.id || null);
+  const editing = editingId ? harvests.find((h) => h.id === editingId) : null;
+
+  const [showForm, setShowForm] = useState(!!initial || !!prefill);
+  const [vegetableId, setVegetableId] = useState(initial?.vegetableId || prefill?.vegetableId || CATALOGUE[0].id);
+  const [quantity, setQuantity] = useState(initial?.quantity ?? 1);
+  const [unit, setUnit] = useState(initial?.unit || CATALOGUE.find((v) => v.id === (prefill?.vegetableId || CATALOGUE[0].id))?.uniteDefaut || "pièces");
+  const [note, setNote] = useState(initial?.note || "");
+  const [entryDate, setEntryDate] = useState(initial?.date || date);
+  const [zoneId, setZoneId] = useState(initial?.zoneId || prefill?.zoneId || "");
 
   const dayPlantings = Object.entries(plantings)
     .filter(([, p]) => p.date === date)
@@ -1317,12 +1383,15 @@ function DayModal({ selectedDay, plantings, harvests, onClose, onSaveHarvest, on
                 <div key={h.id} style={styles.dayEntryRow}>
                   <span>
                     {veg?.emoji} {h.quantity} {h.unit} de {veg?.nom}
+                    {h.zoneId ? ` (${ZONES.find((z) => z.id === h.zoneId)?.nom})` : ""}
                     {h.note ? ` — ${h.note}` : ""}
                   </span>
                   <span style={{ display: "flex", gap: 6 }}>
                     <button
                       style={styles.linkBtn}
                       onClick={() => {
+                        setEditingId(h.id);
+                        setZoneId(h.zoneId || "");
                         setVegetableId(h.vegetableId);
                         setQuantity(h.quantity);
                         setUnit(h.unit);
@@ -1344,7 +1413,13 @@ function DayModal({ selectedDay, plantings, harvests, onClose, onSaveHarvest, on
         )}
 
         {!showForm && (
-          <button style={styles.primaryBtn} onClick={() => setShowForm(true)}>
+          <button
+            style={styles.primaryBtn}
+            onClick={() => {
+              setEditingId(null);
+              setShowForm(true);
+            }}
+          >
             + Ajouter une récolte
           </button>
         )}
@@ -1392,6 +1467,14 @@ function DayModal({ selectedDay, plantings, harvests, onClose, onSaveHarvest, on
               </div>
             </div>
 
+            <label style={styles.label}>Zone (facultatif)</label>
+            <select style={styles.select} value={zoneId} onChange={(e) => setZoneId(e.target.value)}>
+              <option value="">—</option>
+              {ZONES.map((z) => (
+                <option key={z.id} value={z.id}>{z.icon} {z.nom}</option>
+              ))}
+            </select>
+
             <label style={styles.label}>Note (facultatif)</label>
             <input type="text" style={styles.select} value={note} onChange={(e) => setNote(e.target.value)} placeholder="ex : belle récolte malgré la sécheresse" />
 
@@ -1405,6 +1488,7 @@ function DayModal({ selectedDay, plantings, harvests, onClose, onSaveHarvest, on
                     vegetableId,
                     quantity: Number(quantity) || 0,
                     unit,
+                    zoneId: zoneId || undefined,
                     note,
                   })
                 }
@@ -1540,7 +1624,7 @@ function StatsView({ harvests, onEdit, onDelete, onExport, onImport }) {
                   <span style={styles.taskEmoji}>{veg?.emoji}</span>
                   <div style={{ flex: 1 }}>
                     <div style={styles.taskLabel}>{h.quantity} {h.unit} de {veg?.nom}</div>
-                    <div style={styles.taskZone}>{h.date}{h.note ? ` — ${h.note}` : ""}</div>
+                    <div style={styles.taskZone}>{h.date}{h.zoneId ? ` · ${ZONES.find((z) => z.id === h.zoneId)?.nom}` : ""}{h.note ? ` — ${h.note}` : ""}</div>
                   </div>
                   <span style={{ display: "flex", gap: 6 }}>
                     <button style={styles.linkBtn} onClick={() => onEdit(h)}>Modifier</button>
